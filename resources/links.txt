@@ -1,0 +1,5 @@
+#Links used for learning about training and editing YOLO models
+
+1. https://timebutt.github.io/static/how-to-train-yolov2-to-detect-custom-objects/
+
+2. https://github.com/AlexeyAB/darknet
