@@ -10,7 +10,7 @@ import os
 from os import walk, getcwd
 from PIL import Image
 
-classes = ["data_id"]
+classes = ["002"]
 
 def convert(size, box):
     dw = 1./size[0]
@@ -29,10 +29,10 @@ def convert(size, box):
 """-------------------------------------------------------------------""" 
 
 """ Configure Paths"""   
-mypath = "C:/Users/Smartsrc-alex/Documents/ML_class/project_submission/src/BBox-Label-Tool/Labels/001/"
+mypath = "C:/Users/Smartsrc-alex/Documents/ML_class/project_submission/src/BBox-Label-Tool/Labels/003/"
 outpath = "C:/Users/Smartsrc-alex/Documents/ML_class/project_submission/Labels/"
 
-cls = "data_id"
+cls = "002"
 if cls not in classes:
     exit(0)
 cls_id = classes.index(cls)
@@ -60,7 +60,7 @@ for txt_name in txt_name_list:
     """ Open output text files """
     txt_outpath = outpath + txt_name
     print("Output:" + txt_outpath)
-    txt_outfile = open(txt_outpath, "w")
+    txt_outfile = open(txt_outpath, "a")
     
     
     """ Convert the data to YOLO format """
@@ -92,8 +92,8 @@ for txt_name in txt_name_list:
             b = (float(xmin), float(xmax), float(ymin), float(ymax))
             bb = convert((w,h), b)
             print(bb)
-            txt_file.write('\n')
-            txt_outfile.write(str(cls_id) + " " + " ".join([str(a) for a in bb]) + '\n')
+            # txt_file.write('\n')
+            txt_outfile.write(str(2) + " " + " ".join([str(a) for a in bb]) + '\n')
 
     """ Save those images with bb into list"""
     if(ct != 0):
