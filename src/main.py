@@ -30,7 +30,7 @@ def main():
 
     # read and resize input image
     # image = cv2.imread(img)
-    while(z< 200):
+    while(True):
         
         ret,img = cam.read()
         image = cv2.resize(img, (Width,Height))
@@ -169,7 +169,9 @@ def main():
             obj.get_inplane()
             draw_bounding_box(image, obj)
 
-        # display output image    
+        # display output image
+        image = cv2.resize(image, (1024,1024))
+        # cv2.imwrite('./frames/capframe_00' + str(z) +'.jpg',image)
         cv2.imshow("object detection", image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
