@@ -16,6 +16,7 @@ def main():
     import cv2
     import argparse
     import numpy as np
+    import orient_calc as oc
 
     Width = 512
     Height = 512
@@ -57,15 +58,25 @@ def main():
         return output_layers
 
     # function to draw bounding box on the detected object with class name
-    def draw_bounding_box(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
+    def draw_bounding_box(img, obj):
 
-        label = str(classes[class_id])
+        label = obj.Label
+        confidence = 'conf- ' + str(obj.confidence)
 
         color = COLORS[class_id]
 
-        cv2.rectangle(img, (x,y), (x_plus_w,y_plus_h), color, 2)
+        x = round(obj.center[0])
+        y = round(obj.center[1])
+        obj_width = round(obj.center[0] + (obj.dims[0]))
+        obj_height = round(obj.center[1] + (obj.dims[1]))
 
-        cv2.putText(img, label, (x-10,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        print(x, y)
+        print(obj.dims[1])
+
+        cv2.rectangle(img, (x,y), (obj_width,obj_height), color, 2)
+
+        cv2.putText(img, label, (x-5,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        cv2.putText(img, confidence, (x-5,y+obj.dims[1]+20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     # run inference through the network
     # and gather predictions from output layers
@@ -75,6 +86,9 @@ def main():
     class_ids = []
     confidences = []
     boxes = []
+    objects = []
+    gears = []
+    dbs = []
     conf_threshold = 0.5
     nms_threshold = 0.4
 
@@ -106,14 +120,52 @@ def main():
     for i in indices:
         i = i[0]
         box = boxes[i]
-        x = box[0]
-        y = box[1]
-        w = box[2]
-        h = box[3]
 
-        print(h)
+        if(class_ids[i] == 0):
+            new_obj = oc.track_obj()
+            new_obj.Label = 'obj: ' + str(i)
+            new_obj.center = (box[0],box[1])
+            new_obj.dims = (box[2],box[3])
+            new_obj.confidence = round(confidences[i],2)
+            objects.append(new_obj)
+
+        elif(class_ids[i] == 1):
+            gears.append(box)
+
+        elif(class_ids[i] == 2):
+            dbs.append(box)
+
+        # x = box[0]
+        # y = box[1]
+        # w = box[2]
+        # h = box[3]
         
-        draw_bounding_box(image, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
+        # #only print the main id class box, its all we care about in the end and we done want the screen crowded
+        # if(class_ids[i] == 0):
+        #     draw_bounding_box(image, class_ids[i], confidences[i], round(x), 
+        #                       round(y), round(x+w), round(y+h))
+    
+    for obj in objects:
+
+        for gear in gears:
+            if(oc.in_main_obj(obj,gear)):
+                obj.center_g = (gear[0],gear[1])
+                obj.dims_g = (gear[2],gear[3])
+                print("gear added")
+                break
+
+        for db in dbs:
+            if(oc.in_main_obj(obj,db)):
+                obj.center_d = (db[0],db[1])
+                obj.dims_d = (db[2],db[3])
+                print("db added")
+                break
+
+    for obj in objects:
+
+        draw_bounding_box(image, obj)
+
+
 
     # display output image    
     cv2.imshow("object detection", image)
