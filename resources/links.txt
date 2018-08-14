@@ -3,3 +3,5 @@
 1. https://timebutt.github.io/static/how-to-train-yolov2-to-detect-custom-objects/
 
 2. https://github.com/AlexeyAB/darknet
+
+3. https://www.arunponnusamy.com/yolo-object-detection-opencv-python.html
