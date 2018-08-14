@@ -1,3 +1,5 @@
+from math import sqrt,atan,degrees
+
 class track_obj():
     """docstring for ClassName."""
     def __init__(self):
@@ -20,24 +22,43 @@ class track_obj():
         self.dims_d = None
 
         #calculate the inplane orientation of the tacked object
-        def get_inplane(self):
-            #use angles between center point of db and gear
-            pass
+    def get_inplane(self):
+        #use angles between center point of db and gear
+        if(self.center_g and self.center_d):
+            x_diff = self.center_d[0] - self.center_g[0]
+            y_diff = self.center_g[1] - self.center_d[1]
+        # distance = sqrt((x_diff**2) + (y_diff**2))
 
-        #calculate the out of plane orientation of the tracked object
-        def get_outplane(self):
-            #for y axis rotation use distance between gear and db
-            pass
+            if(not x_diff):
+                if(y_diff < 0): self.inplane_rot = 180
+                else: self.inplane_rot = 0
+                
+            else:
+                if(round(degrees(atan(y_diff/x_diff)),2) < 0):
+                    self.inplane_rot = round(-90 - degrees(atan(y_diff/x_diff)),2)
+                elif(round(degrees(atan(y_diff/x_diff)),2) > 0):
+                    self.inplane_rot = round(90 -degrees(atan(y_diff/x_diff)),2)
+                # self.inplane_rot = 90 - round(self.inplane_rot,2)
 
-        #get the scale of the current tracked object
-        def get_scale(self):
-            #use box areas expected vs actual for a given angle/rotation
-            pass
+        else: return -1
+
+        
+
+    #calculate the out of plane orientation of the tracked object
+    def get_outplane(self):
+        #for y axis rotation use distance between gear and db
+        pass
+
+    #get the scale of the current tracked object
+    def get_scale(self):
+        #use box areas expected vs actual for a given angle/rotation
+        pass
 
 
 def in_main_obj(main_obj,child_obj):
     """
     helper function to detect if the child_obj is part of the main_obj
+
     """
     #get bounding box dims for the main box
     main_left = main_obj.center[0] - (main_obj.dims[0]/2)
