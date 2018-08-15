@@ -36,12 +36,12 @@ def main():
         image = cv2.resize(img, (Width,Height))
 
         # read class names from text file
-        classes = None
-        with open(classes_file, 'r') as f:
-            classes = [line.strip() for line in f.readlines()]
+        # # classes = None
+        # with open(classes_file, 'r') as f:
+        #     classes = [line.strip() for line in f.readlines()]
 
         # generate different colors for different classes 
-        COLORS = np.random.uniform(0, 255, size=(len(classes), 3))
+        # COLORS = np.random.uniform(0, 255, size=(len(classes), 3))
 
         # read pre-trained model and config file
         net = cv2.dnn.readNetFromDarknet( config, weights)
@@ -69,7 +69,7 @@ def main():
             confidence = 'conf- ' + str(obj.confidence)
             ip_ang = 'ip-ang: ' + str(obj.inplane_rot)
 
-            color = COLORS[class_id]
+            color = (244, 134, 66)
 
             x = round(obj.center[0])
             y = round(obj.center[1])
@@ -87,9 +87,9 @@ def main():
 
             cv2.rectangle(img, (x,y), (obj_width,obj_height), color, 2)
 
-            cv2.putText(img, label, (x-5,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-            cv2.putText(img, confidence, (x-5,y+obj.dims[1]+20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-            cv2.putText(img, ip_ang, (x-5,y+obj.dims[1]+40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            cv2.putText(img, label, (x-5,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.25, color, 1)
+            cv2.putText(img, confidence, (x-5,y+obj.dims[1]+10), cv2.FONT_HERSHEY_SIMPLEX, 0.25, color, 1)
+            cv2.putText(img, ip_ang, (x-5,y+obj.dims[1]+20), cv2.FONT_HERSHEY_SIMPLEX, 0.25, color, 1)
 
         # run inference through the network
         # and gather predictions from output layers
@@ -184,8 +184,8 @@ def main():
     # # save output image to disk
     # cv2.imwrite("object-detection.jpg", image)
 
-    # # release resources
-    # cv2.destroyAllWindows()
+    # release resources
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
