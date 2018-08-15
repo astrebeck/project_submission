@@ -60,7 +60,7 @@ def main():
     random_num = randint(10,5000)
 
     classes_file = '.\production\classes\obj.names'
-    weights = '.\production\weights\yolov3-tiny-obj_21400.weights'
+    weights = '.\production\weights\yolov3-tiny-obj_21900.weights'
     config = '.\production\cfg\yolov3-tiny-obj - copy.cfg'
 
     z= 0
