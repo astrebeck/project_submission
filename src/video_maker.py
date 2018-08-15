@@ -1,7 +1,7 @@
 import cv2
 import os
 
-image_folder = 'frames'
+image_folder = 'samples'
 video_name = 'video.avi'
 
 images = [img for img in os.listdir(image_folder) if img.endswith(".jpg")]
