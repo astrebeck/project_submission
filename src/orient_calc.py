@@ -10,6 +10,9 @@ class track_obj():
         self.boxes = []
         self.db_box = []
         self.gear_box = []
+        self.boxes_inverted = []
+        self.db_box_inverted = []
+        self.gear_box_inverted = []
 
         #static variables
         self.scale_1 = 153
@@ -74,6 +77,16 @@ class track_obj():
             self.boxes.append(('0 '+ str(self.center[0]/512) + ' ' + str(self.center[1]/512) + ' ' + str(self.dims[0]/512) + ' ' + str(self.dims[1]/512)))
             self.db_box.append(('1 ' + str(self.center_g[0]/512) + ' ' + str(self.center_g[1]/512) + ' ' + str(self.dims_g[0]/512) + ' ' + str(self.dims_g[1]/512)))
             self.gear_box.append(('2 ' + str(self.center_d[0]/512) + ' ' + str(self.center_d[1]/512) + ' ' + str(self.dims_d[0]/512) + ' ' + str(self.dims_d[1]/512))) 
+            return 1
+        else: return 0 
+
+    #valid capture inverted
+    def valid_inverted(self):
+        if(self.center_g and self.center_d and self.dims_g and self.dims_d): 
+            
+            self.boxes_inverted.append(('0 '+ str(1-self.center[0]/512) + ' ' + str(1-self.center[1]/512) + ' ' + str(self.dims[0]/512) + ' ' + str(self.dims[1]/512)))
+            self.db_box_inverted.append(('1 ' + str(1-self.center_g[0]/512) + ' ' + str(1-self.center_g[1]/512) + ' ' + str(self.dims_g[0]/512) + ' ' + str(self.dims_g[1]/512)))
+            self.gear_box_inverted.append(('2 ' + str(1-self.center_d[0]/512) + ' ' + str(1-self.center_d[1]/512) + ' ' + str(self.dims_d[0]/512) + ' ' + str(self.dims_d[1]/512))) 
             return 1
         else: return 0 
 

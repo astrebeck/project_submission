@@ -1,7 +1,7 @@
+from random import randint
 import cv2
 import numpy as np
 import orient_calc as oc
-from random import randint
 
 
 # function to get the output layer names 
@@ -60,7 +60,7 @@ def main():
     random_num = randint(10,5000)
 
     classes_file = '.\production\classes\obj.names'
-    weights = '.\production\weights\yolov3-tiny-obj_21900.weights'
+    weights = '.\production\weights\yolov3-tiny-obj_28900.weights'
     config = '.\production\cfg\yolov3-tiny-obj - copy.cfg'
 
     z= 0
@@ -103,6 +103,7 @@ def main():
         gears = []
         dbs = []
         text_boxes = []
+        text_boxes_inverted = []
         conf_threshold = 0.5       
         nms_threshold = 0.4
 
@@ -171,24 +172,37 @@ def main():
             obj.get_inplane()
             obj.get_scale()
             obj.get_outplane()
-            if(obj.valid()):
-                text_boxes.append(obj.boxes)
-                text_boxes.append(obj.db_box)
-                text_boxes.append(obj.gear_box)
+            # if(obj.valid()):
+            #     text_boxes.append(obj.boxes)
+            #     text_boxes.append(obj.db_box)
+            #     text_boxes.append(obj.gear_box)
+            # if(obj.valid_inverted()):
+            #     text_boxes_inverted.append(obj.boxes_inverted)
+            #     text_boxes_inverted.append(obj.db_box_inverted)
+            #     text_boxes_inverted.append(obj.gear_box_inverted)
 
             draw_bounding_box(image, obj)
         
         #if the image and detection was valid save them for training
-        if(text_boxes):
-            file = open('./frames/img_' + str(random_num) + str(z) + '.txt', 'w+')
-            for item in text_boxes:
-                file.write("%s\n" % item[0])
-            file.close()
-            cv2.imwrite('./frames/img_' + str(random_num) + str(z) + '.jpg',img2)
+        # if(text_boxes):
+        #     file = open('./frames/img_' + str(random_num) + str(z) + '.txt', 'w+')
+        #     for item in text_boxes:
+        #         file.write("%s\n" % item[0])
+        #     file.close()
+        #     cv2.imwrite('./frames/img_' + str(random_num) + str(z) + '.jpg',img2)
+
+        # #if the image and detection was valid save them for training
+        # if(text_boxes_inverted):
+        #     file = open('./frames/img_IN_' + str(random_num) + str(z) + '.txt', 'w+')
+        #     for item in text_boxes_inverted:
+        #         file.write("%s\n" % item[0])
+        #     file.close()
+        #     flipped_img = cv2.flip( img, -1 )
+        #     cv2.imwrite('./frames/img_IN_' + str(random_num) + str(z) + '.jpg',flipped_img)
         
         # display output image
         image = cv2.resize(image, (1024,1024))
-        # cv2.imwrite('./samples/capframe_' + str(random_num) + str(z) + '.jpg',image)
+        cv2.imwrite('./samples/capframe_' + str(random_num) + str(z) + '.jpg',image)
         cv2.imshow("object detection", image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
