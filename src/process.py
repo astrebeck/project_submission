@@ -4,10 +4,10 @@ import glob, os
 #
 
 # Current directory
-current_dir = 'C:/Users/Smartsrc-alex/Documents/ML_class/project_submission/src/darknet/build/darknet/x64/data/obj'
+current_dir = 'C:/Users/Smartsrc-alex/Documents/ML_class/project_submission/src/darknet/build/darknet/x64/data/Invert'
 
 # Directory where the data will reside, relative to 'darknet.exe'
-path_data = 'data/obj/'
+path_data = 'data/Invert/'
 
 # Percentage of images to be used for the test set
 percentage_test = 10
